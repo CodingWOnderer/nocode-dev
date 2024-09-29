@@ -3,9 +3,7 @@ import TextareaAutosize from "react-textarea-autosize";
 import { Button } from "../ui/button";
 import { FaArrowUp } from "react-icons/fa6";
 
-type Props = {};
-
-const BottomTextArea = (props: Props) => {
+const BottomTextArea = () => {
     return (
         <div className="bottom-0 px-5 absolute inset-x-0 flex flex-col justify-center items-center">
             <div className="mx-auto max-w-lg w-full flex items-center mb-5 justify-center space-x-2">

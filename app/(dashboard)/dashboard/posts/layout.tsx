@@ -1,6 +1,4 @@
 import PostsHeader from "@/components/posts-header";
-import { DashboardSide } from "@/components/sidebar";
-import { cn } from "@/lib/utils";
 import "./editor.css"
 import type { Metadata } from "next";
 

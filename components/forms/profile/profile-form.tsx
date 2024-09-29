@@ -42,7 +42,6 @@ const formSchema = z.object({
 });
 
 const ProfileForms = () => {
-    const [profileImage, setProfileImage] = useState(null);
 
     const form = useForm({
         resolver: zodResolver(formSchema),
@@ -54,7 +53,7 @@ const ProfileForms = () => {
         },
     });
 
-    function onSubmit(data: z.infer<typeof formSchema>) { }
+    function onSubmit() { }
     return (
         <div className="grid md:grid-cols-5 w-full mx-auto gap-8">
             <div className=" md:col-span-2">

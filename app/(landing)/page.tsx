@@ -4,9 +4,8 @@ import Image from "next/image";
 import React from "react";
 import { MdOutlineArrowOutward } from "react-icons/md";
 
-type Props = {};
 
-const LandingPage = (props: Props) => {
+const LandingPage = () => {
     return (
         <div>
             <header>
@@ -27,8 +26,8 @@ const LandingPage = (props: Props) => {
                             </h1>
                             <p className="mb-6 max-w-lg text-sm text-gray-500  md:mb-10 lg:mb-12">
                                 {" "}
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit ut
-                                aliquam, purus sit amet luctus venenatis, lectus{" "}
+                                {` Lorem ipsum dolor sit amet, consectetur adipiscing elit ut
+                                aliquam, purus sit amet luctus venenatis, lectus{" "}`}
                             </p>{" "}
                             {/* Hero Button */}{" "}
                             <div className="flex space-x-2 items-center">

@@ -88,7 +88,7 @@ export function BlogForm() {
         theme: "dark",
     };
 
-    function onSubmit(data: z.infer<typeof formSchema>) { }
+    function onSubmit() { }
 
     return (
         <Form {...form}>

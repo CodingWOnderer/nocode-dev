@@ -29,7 +29,6 @@ export const ImageUploader: FC<FileUploaderProps> = (props) => {
         value: valueProp,
         onValueChange,
         onUpload,
-        progresses,
         accept = {
             "image/*": [],
         },
@@ -37,8 +36,6 @@ export const ImageUploader: FC<FileUploaderProps> = (props) => {
         maxFileCount = 1,
         multiple = false,
         disabled = false,
-        className,
-        ...dropzoneProps
     } = props;
 
     const [files, setFiles] = useControllableState({

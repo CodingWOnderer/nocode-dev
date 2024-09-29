@@ -31,7 +31,7 @@ export function getColumns(): ColumnDef<BlogListType>[] {
         },
         {
             id: "actions",
-            cell: function Cell({ row }) {
+            cell: function Cell() {
                 return <Button size={"sm"}>Publish</Button>;
             },
         },

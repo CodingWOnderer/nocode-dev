@@ -59,7 +59,7 @@ export function AddressForm() {
         },
     });
 
-    function onSubmit(data: z.infer<typeof formSchema>) { }
+    function onSubmit() { }
 
     return (
         <div className="grid grid-cols-1 md:grid-cols-5 w-full mx-auto gap-8">
