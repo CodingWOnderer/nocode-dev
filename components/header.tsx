@@ -8,7 +8,7 @@ import { PiLinktreeLogoBold } from 'react-icons/pi';
 import { ThemeToggle } from './toggle-theme';
 
 const headerLinks = [
-    { name: 'Features', href: '/header-demo/#features' },
+    { name: 'Dashboard', href: '/dashboard' },
     { name: 'Pricing', href: '/header-demo/#pricing' },
     { name: 'FAQs', href: '/header-demo/#faqs' },
 ];

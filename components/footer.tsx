@@ -13,7 +13,7 @@ const Footer = () => {
             <div className="py-16 md:py-20 mx-auto w-full max-w-7xl px-5 md:px-10">
                 {/* Component */}
                 <div className="flex flex-col items-center">
-                    {/* <Link href="/" className="mb-8 inline-block max-w-full text-black">
+                    {/* <Link href="/" className="mb-8 inline-block max-w-full text-foreground">
                         <Image
                             src="https://assets.website-files.com/6458c625291a94a195e6cf3a/6458c625291a94d6f4e6cf96_Group%2047874-3.png"
                             alt="Logo"
@@ -29,31 +29,31 @@ const Footer = () => {
                     <div className="text-center font-semibold">
                         <Link
                             href="#"
-                            className="inline-block px-6 py-2 font-normal text-black transition hover:text-blue-600"
+                            className="inline-block px-6 py-2 font-normal text-foreground transition hover:text-primary"
                         >
                             About
                         </Link>
                         <Link
                             href="#"
-                            className="inline-block px-6 py-2 font-normal text-black transition hover:text-blue-600"
+                            className="inline-block px-6 py-2 font-normal text-foreground transition hover:text-primary"
                         >
                             Features
                         </Link>
                         <Link
                             href="#"
-                            className="inline-block px-6 py-2 font-normal text-black transition hover:text-blue-600"
+                            className="inline-block px-6 py-2 font-normal text-foreground transition hover:text-primary"
                         >
                             Works
                         </Link>
                         <Link
                             href="#"
-                            className="inline-block px-6 py-2 font-normal text-black transition hover:text-blue-600"
+                            className="inline-block px-6 py-2 font-normal text-foreground transition hover:text-primary"
                         >
                             Support
                         </Link>
                         <Link
                             href="#"
-                            className="inline-block px-6 py-2 font-normal text-black transition hover:text-blue-600"
+                            className="inline-block px-6 py-2 font-normal text-foreground transition hover:text-primary"
                         >
                             Help
                         </Link>
@@ -62,7 +62,7 @@ const Footer = () => {
                     <div className="mb-12 grid grid-cols-4 w-full max-w-52 gap-3">
                         <Link
                             href="#"
-                            className="mx-auto flex flex-col max-w-6 items-center justify-center text-black"
+                            className="mx-auto flex flex-col max-w-6 items-center justify-center text-foreground invert"
                         >
                             <Image
                                 src="https://assets.website-files.com/6458c625291a94a195e6cf3a/6458c625291a945b4ae6cf7b_Vector-1.svg"
@@ -74,7 +74,7 @@ const Footer = () => {
                         </Link>
                         <Link
                             href="#"
-                            className="mx-auto flex flex-col max-w-6 items-center justify-center text-black"
+                            className="mx-auto flex flex-col max-w-6 items-center justify-center text-foreground invert"
                         >
                             <Image
                                 src="https://assets.website-files.com/6458c625291a94a195e6cf3a/6458c625291a945560e6cf77_Vector.svg"
@@ -86,7 +86,7 @@ const Footer = () => {
                         </Link>
                         <Link
                             href="#"
-                            className="mx-auto flex flex-col max-w-6 items-center justify-center text-black"
+                            className="mx-auto flex flex-col max-w-6 items-center justify-center text-foreground invert"
                         >
                             <Image
                                 src="https://assets.website-files.com/6458c625291a94a195e6cf3a/6458c625291a940535e6cf7a_Vector-3.svg"
@@ -98,7 +98,7 @@ const Footer = () => {
                         </Link>
                         <Link
                             href="#"
-                            className="mx-auto flex flex-col max-w-6 items-center justify-center text-black"
+                            className="mx-auto flex flex-col max-w-6 items-center justify-center text-foreground invert"
                         >
                             <Image
                                 src="https://assets.website-files.com/6458c625291a94a195e6cf3a/6458c625291a9433a9e6cf88_Vector-2.svg"
