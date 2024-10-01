@@ -1,5 +1,6 @@
 "use client";
 import { useControllableState } from "@/hooks/use-controllable-state";
+import { FileTobase64 } from "@/utils";
 import React from "react";
 import { FC } from "react";
 import Dropzone, { DropzoneProps, FileRejection } from "react-dropzone";
@@ -7,8 +8,8 @@ import { IoCloudUploadOutline } from "react-icons/io5";
 import { toast } from "sonner";
 
 interface FileUploaderProps extends React.HTMLAttributes<HTMLDivElement> {
-    value?: File[];
-    onValueChange?: (files: File[]) => void;
+    value?: string;
+    onValueChange?: (files: string) => void;
     onUpload?: (files: File[]) => Promise<void>;
     progresses?: Record<string, number>;
     accept?: DropzoneProps["accept"];
@@ -19,10 +20,6 @@ interface FileUploaderProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export type FileWithPreview = File & { preview: string }
-
-function isFileWithPreview(file: File): file is FileWithPreview {
-    return "preview" in file && typeof file.preview === "string";
-}
 
 export const ImageUploader: FC<FileUploaderProps> = (props) => {
     const {
@@ -43,75 +40,28 @@ export const ImageUploader: FC<FileUploaderProps> = (props) => {
         onChange: onValueChange,
     });
 
+
+    const updatedImage = async (file: File) => {
+        const resolvedImage = await FileTobase64(file);
+        setFiles(resolvedImage?.image as string);
+    };
     const onDrop = React.useCallback(
         (acceptedFiles: File[], rejectedFiles: FileRejection[]) => {
             if (!multiple && maxFileCount === 1 && acceptedFiles.length > 1) {
                 toast.error("Cannot upload more than 1 file at a time");
                 return;
             }
-
-            if ((files?.length ?? 0) + acceptedFiles.length > maxFileCount) {
-                toast.error(`Cannot upload more than ${maxFileCount} files`);
-                return;
-            }
-
-            const newFiles = acceptedFiles.map((file) =>
-                Object.assign(file, {
-                    preview: URL.createObjectURL(file),
-                })
-            );
-
-            const updatedFiles = files ? [...files, ...newFiles] : newFiles;
-
-            setFiles(updatedFiles);
+            updatedImage(acceptedFiles[0])
 
             if (rejectedFiles.length > 0) {
-                rejectedFiles.forEach(({ file }) => {
-                    toast.error(`File ${file.name} was rejected`);
-                });
-            }
-
-            if (
-                onUpload &&
-                updatedFiles.length > 0 &&
-                updatedFiles.length <= maxFileCount
-            ) {
-                const target =
-                    updatedFiles.length > 0 ? `${updatedFiles.length} files` : `file`;
-
-                toast.promise(onUpload(updatedFiles), {
-                    loading: `Uploading ${target}...`,
-                    success: () => {
-                        setFiles([]);
-                        return `${target} uploaded`;
-                    },
-                    error: `Failed to upload ${target}`,
-                });
+                rejectedFiles.forEach((item) => {
+                    toast.error(`${item.file.name} has been rejected`)
+                })
             }
         },
 
         [files, maxFileCount, multiple, onUpload, setFiles]
     );
-
-    function onRemove(index: number) {
-        if (!files) return;
-        const newFiles = files.filter((_, i) => i !== index);
-        setFiles(newFiles);
-        onValueChange?.(newFiles);
-    }
-
-    // Revoke preview url when component unmounts
-    React.useEffect(() => {
-        return () => {
-            if (!files) return;
-            files.forEach((file) => {
-                if (isFileWithPreview(file)) {
-                    URL.revokeObjectURL(file.preview);
-                }
-            });
-        };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
 
     const isDisabled = disabled || (files?.length ?? 0) >= maxFileCount;
 

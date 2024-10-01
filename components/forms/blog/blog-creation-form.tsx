@@ -11,7 +11,6 @@ import FroalaEditorComponent from "react-froala-wysiwyg";
 import {
     Form,
     FormControl,
-    FormDescription,
     FormField,
     FormItem,
     FormLabel,
@@ -20,39 +19,57 @@ import {
 import { Input } from "@/components/ui/input";
 import { format } from "date-fns";
 import {
-    FileWithPreview,
     ImageUploader,
 } from "@/components/common/file-upload";
 import Image from "next/image";
 import { IoIosCloseCircle } from "react-icons/io";
+import { Textarea } from "@/components/ui/textarea";
+import { CalendarIcon } from "lucide-react";
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from "@/components/ui/popover";
+import { Calendar } from "@/components/ui/calendar";
+import { toast } from "sonner";
+import { TimePickerDemo } from "@/components/extension/time-picker-demo";
+import { cn } from "@/lib/utils";
+import useBlogStore from "@/hooks/use-blog-store";
 
-// Zod schema for form validation
+
 const formSchema = z.object({
     title: z.string().min(1, { message: "Title is required" }),
+    discription: z.string().min(10, { message: "atleast 10 words" }),
     slug: z
         .string()
         .min(1, { message: "Slug is required" })
         .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, {
             message: "Slug must be lowercase and hyphenated",
         }),
-    date: z.string().min(1, { message: "Date is required" }),
-    image: z
-        .any()
-        .refine((file) => file.length > 0, { message: "Image is required" }),
+    date: z.date().optional(),
+    image: z.string().optional(),
     content: z.string().min(1, { message: "Content is required" }),
 });
 
+export type BlogTypes = z.infer<typeof formSchema>;
+
 export function BlogForm() {
+
+    const { setLocalBlog } = useBlogStore();
+
     const form = useForm({
         resolver: zodResolver(formSchema),
         defaultValues: {
             title: "",
             slug: "",
-            date: "",
+            date: undefined,
             image: undefined,
+            discription: "",
             content: "",
         },
     });
+
+
 
     const config = {
         key: process.env.NEXT_PUBLIC_FROALA_EDITOR_KEY,
@@ -88,11 +105,18 @@ export function BlogForm() {
         theme: "dark",
     };
 
-    function onSubmit() { }
+    function onSubmit(data: z.infer<typeof formSchema>) {
+        console.log(data);
+        setLocalBlog({ ...data, date: data.date?.toISOString() })
+        toast.success("Your blog has been created");
+    }
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="space-y-8"
+            >
                 {/* Title */}
                 <FormField
                     control={form.control}
@@ -102,6 +126,21 @@ export function BlogForm() {
                             <FormLabel>Title</FormLabel>
                             <FormControl>
                                 <Input placeholder="Enter the title" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+
+                {/** Discription */}
+                <FormField
+                    control={form.control}
+                    name="discription"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Discription</FormLabel>
+                            <FormControl>
+                                <Textarea placeholder="Enter discription" {...field} rows={4} />
                             </FormControl>
                             <FormMessage />
                         </FormItem>
@@ -128,19 +167,42 @@ export function BlogForm() {
                     control={form.control}
                     name="date"
                     render={({ field }) => (
-                        <FormItem>
+                        <FormItem className="flex flex-col">
                             <FormLabel>Date</FormLabel>
-                            <FormControl>
-                                <Input
-                                    type="date"
-                                    {...field}
-                                    onChange={(e) =>
-                                        field.onChange(
-                                            format(new Date(e.target.value), "MM/dd/yyyy")
-                                        )
-                                    }
-                                />
-                            </FormControl>
+                            <Popover>
+                                <FormControl>
+                                    <PopoverTrigger asChild>
+                                        <Button
+                                            variant="outline"
+                                            className={cn(
+                                                "w-full justify-start text-left font-normal",
+                                                !field.value && "text-muted-foreground"
+                                            )}
+                                        >
+                                            <CalendarIcon className="mr-2 h-4 w-4" />
+                                            {field.value ? (
+                                                format(field.value, "PPP HH:mm:ss")
+                                            ) : (
+                                                <span>Pick a date</span>
+                                            )}
+                                        </Button>
+                                    </PopoverTrigger>
+                                </FormControl>
+                                <PopoverContent className="w-auto mr-auto p-0">
+                                    <Calendar
+                                        mode="single"
+                                        selected={field.value}
+                                        onSelect={field.onChange}
+                                        initialFocus
+                                    />
+                                    <div className="p-3 border-t border-border">
+                                        <TimePickerDemo
+                                            setDate={field.onChange}
+                                            date={field.value}
+                                        />
+                                    </div>
+                                </PopoverContent>
+                            </Popover>
                             <FormMessage />
                         </FormItem>
                     )}
@@ -154,29 +216,27 @@ export function BlogForm() {
                         <FormItem>
                             <FormLabel>Image</FormLabel>
                             <FormControl>
-                                {(form.getValues("image") as unknown as FileWithPreview[])?.[0]
-                                    ?.preview ? (
+                                {form.getValues("image") !== undefined ? (
                                     <div className="relative p-2">
                                         <div className="aspect-video relative  overflow-clip rounded-lg">
                                             <Image
-                                                src={
-                                                    (
-                                                        form.getValues(
-                                                            "image"
-                                                        ) as unknown as FileWithPreview[]
-                                                    )[0]?.preview
-                                                }
+                                                src={form?.getValues("image") ?? ""}
                                                 alt="Blog Header"
                                                 fill
                                             />
                                         </div>
-                                        <Button className=" absolute -left-0.5 -top-2 bg-background hover:bg-background rounded-full shadow-none p-0 size-6 text-red-500" size={"icon"}>
+                                        <Button
+                                            type="button"
+                                            onClick={() => form.resetField("image")}
+                                            className=" absolute -left-0.5 -top-2 bg-background hover:bg-background rounded-full shadow-none p-0 size-6 text-red-500"
+                                            size={"icon"}
+                                        >
                                             <IoIosCloseCircle size={24} />
                                         </Button>
                                     </div>
                                 ) : (
                                     <ImageUploader
-                                        value={field?.value}
+                                        value={field.value}
                                         onValueChange={field.onChange}
                                         maxFileCount={1}
                                         maxSize={4 * 1024 * 1024}
@@ -211,7 +271,9 @@ export function BlogForm() {
                         </FormItem>
                     )}
                 />
-                <Button type="submit" size={"sm"} className=" float-right w-[80px]">Save</Button>
+                <Button type="submit" size={"sm"} className=" float-right w-[80px]">
+                    Save
+                </Button>
             </form>
         </Form>
     );

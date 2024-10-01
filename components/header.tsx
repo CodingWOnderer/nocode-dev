@@ -6,6 +6,7 @@ import { Button } from './ui/button';
 import { DextopHeader } from './dextop-header';
 import { PiLinktreeLogoBold } from 'react-icons/pi';
 import { ThemeToggle } from './toggle-theme';
+import React from 'react';
 
 const headerLinks = [
     { name: 'Dashboard', href: '/dashboard' },
