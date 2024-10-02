@@ -63,15 +63,13 @@ export const ImageUploader: FC<FileUploaderProps> = (props) => {
         [files, maxFileCount, multiple, onUpload, setFiles]
     );
 
-    const isDisabled = disabled || (files?.length ?? 0) >= maxFileCount;
-
     return (
         <Dropzone onDrop={onDrop}
             accept={accept}
             maxSize={maxSize}
             maxFiles={maxFileCount}
             multiple={maxFileCount > 1 || multiple}
-            disabled={isDisabled}
+
         >
             {({ getRootProps, getInputProps }) => (
                 <section className="w-full">

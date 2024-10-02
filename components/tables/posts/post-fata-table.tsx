@@ -11,7 +11,8 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import { Separator } from "@/components/ui/separator";
+import React from "react";
+import { FormRow } from "./post-form-row";
 
 interface DataTableProps<TData> extends React.HTMLAttributes<HTMLDivElement> {
     table: TankstackTable<TData>;
@@ -48,25 +49,12 @@ export function DataTable<TData>({
                             </TableRow>
                         ))}
                     </TableHeader>
-                    {children}
+                    <>{children}</>
                     <TableBody>
                         {table.getRowModel().rows?.length ? (
-                            table.getRowModel().rows.map((row) => (
-                                <TableRow
-                                    key={row.id}
-                                    data-state={row.getIsSelected() && "selected"}
-                                    className="group group-hover:bg-muted-foreground cursor-pointer"
-                                >
-                                    {row.getVisibleCells().map((cell) => (
-                                        <TableCell key={cell.id}>
-                                            {flexRender(
-                                                cell.column.columnDef.cell,
-                                                cell.getContext()
-                                            )}
-                                        </TableCell>
-                                    ))}
-                                </TableRow>
-                            ))
+                            table
+                                .getRowModel()
+                                .rows.map((row) => <FormRow key={row.id} row={row} />)
                         ) : (
                             <TableRow>
                                 <TableCell

@@ -2193,4 +2193,8 @@
     color: #0098f7; }
   .dark-theme #fr-logo:hover > svg .fr-logo, .dark-theme #fr-logo:focus > svg .fr-logo {
     fill: #0098f7; }
+
+    #fr-logo{
+      display:none;
+    }
   

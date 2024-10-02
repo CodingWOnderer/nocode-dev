@@ -1,7 +1,8 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { BlogListType } from "../validations/schema";
-import { Button } from "@/components/ui/button";
 import Image from "next/image";
+import { PublishButton } from "./_components/publish-button";
+import { Button } from "@/components/ui/button";
 
 export function getColumns(): ColumnDef<BlogListType>[] {
     return [
@@ -31,8 +32,8 @@ export function getColumns(): ColumnDef<BlogListType>[] {
         },
         {
             id: "actions",
-            cell: function Cell() {
-                return <Button size={"sm"}>Publish</Button>;
+            cell: function Cell({ row }) {
+                return <PublishButton blog={row.original} />
             },
         },
     ];

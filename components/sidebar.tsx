@@ -1,6 +1,7 @@
 import { cn } from "@/lib/utils";
 import { ScrollArea, ScrollBar } from "./ui/scroll-area";
 import { PiLinktreeLogoBold, PiUserSquare } from "react-icons/pi";
+import { LiaBlogSolid } from "react-icons/lia";
 import { MdDashboard } from "react-icons/md";
 import { SideItem } from "./sidebar-items";
 import { MdOutlineLocalPostOffice } from "react-icons/md";
@@ -34,6 +35,11 @@ export const DashboardSide = () => {
                             href={"/dashboard/capconsgpt"}
                             label={"Capcons Gpt"}
                             Icon={<FaBraille className=" size-5" />}
+                        />
+                        <SideItem
+                            href={"/dashboard/published"}
+                            label={"Published Blogs"}
+                            Icon={<LiaBlogSolid className=" size-5" />}
                         />
                         <SideItem
                             href={"/dashboard/posts"}

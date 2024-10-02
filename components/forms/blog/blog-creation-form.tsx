@@ -4,13 +4,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { Button } from "@/components/ui/button";
-import "froala-editor/css/froala_editor.pkgd.min.css";
-import "froala-editor/css/froala_style.min.css";
-import "froala-editor/js/plugins.pkgd.min.js";
-import FroalaEditorComponent from "react-froala-wysiwyg";
 import {
     Form,
     FormControl,
+    FormDescription,
     FormField,
     FormItem,
     FormLabel,
@@ -18,9 +15,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { format } from "date-fns";
-import {
-    ImageUploader,
-} from "@/components/common/file-upload";
+import { ImageUploader } from "@/components/common/file-upload";
 import Image from "next/image";
 import { IoIosCloseCircle } from "react-icons/io";
 import { Textarea } from "@/components/ui/textarea";
@@ -35,7 +30,15 @@ import { toast } from "sonner";
 import { TimePickerDemo } from "@/components/extension/time-picker-demo";
 import { cn } from "@/lib/utils";
 import useBlogStore from "@/hooks/use-blog-store";
+import dynamic from "next/dynamic";
+import { InputTags } from "@/components/extension/tag-input";
 
+const FroalaEditorComponent = dynamic(
+    () => import("@/components/core/text-editor"),
+    {
+        ssr: false,
+    }
+);
 
 const formSchema = z.object({
     title: z.string().min(1, { message: "Title is required" }),
@@ -48,75 +51,41 @@ const formSchema = z.object({
         }),
     date: z.date().optional(),
     image: z.string().optional(),
+    userTags: z.array(z.string()),
     content: z.string().min(1, { message: "Content is required" }),
 });
 
 export type BlogTypes = z.infer<typeof formSchema>;
 
-export function BlogForm() {
-
+export function BlogForm(BlogProps: BlogTypes) {
     const { setLocalBlog } = useBlogStore();
+    const setBlogList = useBlogStore((state) => state.setBlogList);
+
 
     const form = useForm({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            title: "",
-            slug: "",
-            date: undefined,
-            image: undefined,
-            discription: "",
-            content: "",
+            title: BlogProps.title,
+            slug: BlogProps.slug,
+            date: BlogProps.date,
+            image: BlogProps.image,
+            discription: BlogProps.discription,
+            content: BlogProps.content,
+            userTags: BlogProps.userTags,
         },
     });
 
-
-
-    const config = {
-        key: process.env.NEXT_PUBLIC_FROALA_EDITOR_KEY,
-        toolbarInline: false,
-        toolbarSticky: false,
-        charCounterCount: false,
-        tooltips: false,
-        placeholderText: "Unveil your story...",
-        toolbarButtons: [
-            "bold",
-            "italic",
-            "underline",
-            "fontSize",
-            "alignLeft",
-            "alignCenter",
-            "alignRight",
-            "alignJustify",
-            "formatOL",
-            "formatUL",
-            "paragraphFormat",
-            "quote",
-            "insertLink",
-            "insertImage",
-            "insertVideo",
-            "insertTable",
-            "embedly",
-            "insertFile",
-            "fullscreen",
-            "getPDF",
-            "html",
-        ],
-        quickInsertEnabled: false,
-        theme: "dark",
-    };
+    const imageValue = form.watch("image");
 
     function onSubmit(data: z.infer<typeof formSchema>) {
-        console.log(data);
-        setLocalBlog({ ...data, date: data.date?.toISOString() })
+        setLocalBlog({ ...data, date: data.date?.toISOString(), publish: false });
+        setBlogList({ ...data, date: data.date?.toISOString(), publish: false });
         toast.success("Your blog has been created");
     }
 
     return (
         <Form {...form}>
-            <form
-                onSubmit={form.handleSubmit(onSubmit)}
-                className="space-y-8"
-            >
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
                 {/* Title */}
                 <FormField
                     control={form.control}
@@ -216,18 +185,14 @@ export function BlogForm() {
                         <FormItem>
                             <FormLabel>Image</FormLabel>
                             <FormControl>
-                                {form.getValues("image") !== undefined ? (
+                                {imageValue !== undefined ? (
                                     <div className="relative p-2">
                                         <div className="aspect-video relative  overflow-clip rounded-lg">
-                                            <Image
-                                                src={form?.getValues("image") ?? ""}
-                                                alt="Blog Header"
-                                                fill
-                                            />
+                                            <Image src={imageValue ?? ""} alt="Blog Header" fill />
                                         </div>
                                         <Button
                                             type="button"
-                                            onClick={() => form.resetField("image")}
+                                            onClick={() => form.setValue("image", undefined)}
                                             className=" absolute -left-0.5 -top-2 bg-background hover:bg-background rounded-full shadow-none p-0 size-6 text-red-500"
                                             size={"icon"}
                                         >
@@ -248,6 +213,25 @@ export function BlogForm() {
                     )}
                 />
 
+                {/**tags */}
+                <FormField
+                    control={form.control}
+                    name="userTags"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Add Data Point(s)</FormLabel>
+                            <FormControl>
+                                <InputTags {...field} />
+                            </FormControl>
+                            <FormDescription>
+                                Enter up to 5 relevant tags for your blog post, like 'coding'
+                                or 'productivity'.
+                            </FormDescription>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+
                 {/* Content */}
                 <FormField
                     control={form.control}
@@ -258,12 +242,7 @@ export function BlogForm() {
                             <FormControl>
                                 <div className="editor-container pt-5 mx-auto max-w-4xl">
                                     <div className="editor-title-input">
-                                        <FroalaEditorComponent
-                                            tag="textarea"
-                                            model={field.value}
-                                            onModelChange={field.onChange}
-                                            config={config}
-                                        />
+                                        <FroalaEditorComponent field={field} />
                                     </div>
                                 </div>
                             </FormControl>

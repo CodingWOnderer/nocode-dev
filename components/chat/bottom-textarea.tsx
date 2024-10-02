@@ -10,7 +10,7 @@ const BottomTextArea = () => {
                 <TextareaAutosize
                     maxRows={4}
                     placeholder="Ask me anything....."
-                    className="bg-background/20 placeholder:text-stone-300 flex flex-col justify-center focus:outline outline-stone-700 px-4 py-3.5 text-sm resize-none rounded-full w-full  "
+                    className="dark:bg-background/20 bg-accent border placeholder:text-stone-300 flex flex-col justify-center focus:outline focus:border-none shadow-2xl outline-border dark:outline-stone-700 px-4 py-3.5 text-sm resize-none rounded-full w-full  "
                 />
                 <Button className="rounded-full">
                     <FaArrowUp />
