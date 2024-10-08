@@ -29,6 +29,7 @@ export function DataTable<TData>({
             className={cn("w-full space-y-2.5 overflow-auto", className)}
             {...props}
         >
+            {children}
             <div className=" w-full">
                 <Table className=" w-full">
                     <TableHeader>
@@ -49,8 +50,8 @@ export function DataTable<TData>({
                             </TableRow>
                         ))}
                     </TableHeader>
-                    <>{children}</>
                     <TableBody>
+
                         {table.getRowModel().rows?.length ? (
                             table
                                 .getRowModel()

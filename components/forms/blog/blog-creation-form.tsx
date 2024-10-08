@@ -1,8 +1,5 @@
-"use client";
-
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import * as z from "zod";
+"use client"
+import { UseFormReturn } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import {
     Form,
@@ -26,10 +23,8 @@ import {
     PopoverTrigger,
 } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
-import { toast } from "sonner";
 import { TimePickerDemo } from "@/components/extension/time-picker-demo";
 import { cn } from "@/lib/utils";
-import useBlogStore from "@/hooks/use-blog-store";
 import dynamic from "next/dynamic";
 import { InputTags } from "@/components/extension/tag-input";
 
@@ -40,52 +35,30 @@ const FroalaEditorComponent = dynamic(
     }
 );
 
-const formSchema = z.object({
-    title: z.string().min(1, { message: "Title is required" }),
-    discription: z.string().min(10, { message: "atleast 10 words" }),
-    slug: z
-        .string()
-        .min(1, { message: "Slug is required" })
-        .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, {
-            message: "Slug must be lowercase and hyphenated",
-        }),
-    date: z.date().optional(),
-    image: z.string().optional(),
-    userTags: z.array(z.string()),
-    content: z.string().min(1, { message: "Content is required" }),
-});
-
-export type BlogTypes = z.infer<typeof formSchema>;
-
-export function BlogForm(BlogProps: BlogTypes) {
-    const { setLocalBlog } = useBlogStore();
-    const setBlogList = useBlogStore((state) => state.setBlogList);
-
-
-    const form = useForm({
-        resolver: zodResolver(formSchema),
-        defaultValues: {
-            title: BlogProps.title,
-            slug: BlogProps.slug,
-            date: BlogProps.date,
-            image: BlogProps.image,
-            discription: BlogProps.discription,
-            content: BlogProps.content,
-            userTags: BlogProps.userTags,
+interface BlogFromProps {
+    form: UseFormReturn<
+        {
+            title: string;
+            slug: string;
+            date: Date | undefined;
+            image: string | undefined;
+            discription: string;
+            category: string;
+            author: string;
+            content: string;
+            userTags: string[];
         },
-    });
+        any,
+        undefined
+    >;
+}
 
+export function BlogForm({ form }: BlogFromProps) {
     const imageValue = form.watch("image");
-
-    function onSubmit(data: z.infer<typeof formSchema>) {
-        setLocalBlog({ ...data, date: data.date?.toISOString(), publish: false });
-        setBlogList({ ...data, date: data.date?.toISOString(), publish: false });
-        toast.success("Your blog has been created");
-    }
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            <form className="space-y-8 relative">
                 {/* Title */}
                 <FormField
                     control={form.control}
@@ -110,6 +83,36 @@ export function BlogForm(BlogProps: BlogTypes) {
                             <FormLabel>Discription</FormLabel>
                             <FormControl>
                                 <Textarea placeholder="Enter discription" {...field} rows={4} />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+
+                {/** Category */}
+                <FormField
+                    control={form.control}
+                    name="category"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Category</FormLabel>
+                            <FormControl>
+                                <Input placeholder="Enter Category" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+
+                {/** Author*/}
+                <FormField
+                    control={form.control}
+                    name="author"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Author</FormLabel>
+                            <FormControl>
+                                <Input placeholder="Authors name" {...field} />
                             </FormControl>
                             <FormMessage />
                         </FormItem>
@@ -167,7 +170,8 @@ export function BlogForm(BlogProps: BlogTypes) {
                                     <div className="p-3 border-t border-border">
                                         <TimePickerDemo
                                             setDate={field.onChange}
-                                            date={field.value}
+                                            // @ts-ignore
+                                            date={new Date(field?.value ?? undefined)}
                                         />
                                     </div>
                                 </PopoverContent>
@@ -219,13 +223,13 @@ export function BlogForm(BlogProps: BlogTypes) {
                     name="userTags"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Add Data Point(s)</FormLabel>
+                            <FormLabel>Add Tag(s)</FormLabel>
                             <FormControl>
                                 <InputTags {...field} />
                             </FormControl>
                             <FormDescription>
-                                Enter up to 5 relevant tags for your blog post, like 'coding'
-                                or 'productivity'.
+                                Enter up to 5 relevant tags for your blog post, like 'coding' or
+                                'productivity'.
                             </FormDescription>
                             <FormMessage />
                         </FormItem>
@@ -250,9 +254,6 @@ export function BlogForm(BlogProps: BlogTypes) {
                         </FormItem>
                     )}
                 />
-                <Button type="submit" size={"sm"} className=" float-right w-[80px]">
-                    Save
-                </Button>
             </form>
         </Form>
     );

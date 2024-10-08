@@ -1,4 +1,5 @@
 "use client";
+import PostsHeader from "@/components/posts-header";
 import { PostsTable } from "@/components/tables/posts/posts-table";
 import { BlogListType } from "@/components/tables/validations/schema";
 import useBlogStore from "@/hooks/use-blog-store";
@@ -15,9 +16,12 @@ const PostsPage = () => {
     }));
 
     return (
-        <div className="px-5">
-            <PostsTable postPromise={PostTableData} />
-        </div>
+        <>
+            <PostsHeader />
+            <div className="px-5">
+                <PostsTable postPromise={PostTableData} />
+            </div>
+        </>
     );
 };
 

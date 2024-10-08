@@ -1,6 +1,8 @@
 import { DashboardSide } from "@/components/sidebar";
 import { cn } from "@/lib/utils";
 import type { Metadata } from "next";
+import NextTopLoader from "nextjs-toploader";
+import React from "react";
 
 export const metadata: Metadata = {
     title: "Create Next App",
@@ -13,15 +15,19 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <main className="w-full lg:flex lg:[grid-template-columns:auto_1fr]">
-            <DashboardSide />
-            <main
-                className={cn(
-                    "relative h-screen overflow-auto border-x bg-background dark:bg-stone-900 transition-transform duration-300 lg:ml-auto lg:mr-1 lg:mt-1 lg:h-[calc(100vh-4px)] lg:w-[calc(100vw-18rem)] lg:rounded-t-[--card-radius] lg:border-t lg:shadow-md lg:shadow-gray-600/10"
-                )}
-            >
-                {children}
+        <>
+            {" "}
+
+            <main className="w-full lg:flex lg:[grid-template-columns:auto_1fr]">
+                <DashboardSide />
+                <main
+                    className={cn(
+                        "relative h-screen overflow-auto border-x bg-background dark:bg-stone-900 transition-transform duration-300 lg:ml-auto lg:mr-1 lg:mt-1 lg:h-[calc(100vh-4px)] lg:w-[calc(100vw-18rem)] lg:rounded-t-[--card-radius] lg:border-t lg:shadow-md lg:shadow-gray-600/10"
+                    )}
+                >
+                    {children}
+                </main>
             </main>
-        </main>
+        </>
     );
 }

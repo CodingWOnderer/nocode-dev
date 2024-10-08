@@ -6,7 +6,7 @@ import Image from "next/image";
 import React from "react";
 import useBlogStore from "@/hooks/use-blog-store";
 import { motion } from "framer-motion";
-import BlogPreviewSkeleton from "@/components/blog/blog-preview-skeleton";
+import BlogPreviewSkeleton from "@/components/skeletons/blog-preview-skeleton";
 
 const parentVariants = {
     hidden: { opacity: 0 },
@@ -48,8 +48,8 @@ const Page = ({ params }: { params: { slug: string } }) => {
                     viewport={{ once: true }}
                     variants={childVariants}
                 >
-                    <Badge className="bg-primary/30 rounded-full border-primary text-primary space-x-1.5">
-                        <span>8 min read</span>
+                    <Badge className="bg-primary/30 gap-x-2 rounded-full border-primary text-primary space-x-1.5">
+                        {currentPost.category} <span>8 min read</span>
                     </Badge>
                     <h2 className="text-3xl md:text-4xl font-bold">{`${currentPost?.title}`}</h2>
                     <p className="text-muted-foreground line-clamp-4 text-base md:text-lg">
@@ -95,7 +95,7 @@ const Page = ({ params }: { params: { slug: string } }) => {
                     <div className="flex items-center space-x-6 w-full">
                         <div className="flex flex-col space-y-2">
                             <p className="text-muted-foreground text-sm">Written by</p>
-                            <h2 className="text-lg">Bill Walsh</h2>
+                            <h2 className="text-lg">{currentPost.author}</h2>
                         </div>
                         <div className="flex flex-col space-y-2">
                             <p className="text-muted-foreground text-sm">Published on</p>

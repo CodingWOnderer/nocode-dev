@@ -26,7 +26,7 @@ export const PreviewModal = ({ slug, children }: PreviewModalProps) => {
                 }
             }}
         >
-            <DialogContent className=" w-full max-h-[40rem]">
+            <DialogContent className=" max-w-5xl w-11/12 h-full max-h-[40rem]">
                 <DialogHeader>
                     <DialogTitle>Currently Live</DialogTitle>
                     <DialogDescription></DialogDescription>

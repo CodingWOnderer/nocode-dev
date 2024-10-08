@@ -22,7 +22,6 @@ export const PublishButton = ({ blog }: PublishBlogDailogProps) => {
 
     const handlePublish: React.MouseEventHandler<HTMLButtonElement> | undefined = (event) => {
         event.stopPropagation()
-        console.log(published)
         if (isPublished) setPublished({ ...isPublished, publish: true });
     };
 

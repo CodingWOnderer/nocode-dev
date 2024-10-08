@@ -28,6 +28,7 @@ export function DataTable<TData>({
             className={cn("w-full space-y-2.5 overflow-auto", className)}
             {...props}
         >
+            {children}
             <Table className=" w-full">
                 <TableHeader>
                     {table.getHeaderGroups().map((headerGroup) => (
@@ -47,7 +48,7 @@ export function DataTable<TData>({
                         </TableRow>
                     ))}
                 </TableHeader>
-                {children}
+
                 <TableBody>
                     {table.getRowModel().rows?.length ? (
                         table.getRowModel().rows.map((row) => (

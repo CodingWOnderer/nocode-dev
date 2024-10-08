@@ -79,3 +79,16 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+
+input:-webkit-autofill {
+  background-color: #0C0A09 !important; 
+  -webkit-box-shadow: 0 0 0 30px #0C0A09 inset; 
+  color: #000 !important; 
+}
+
+input:-webkit-autofill:focus{
+  background-color: #0C0A09 !important;
+  -webkit-box-shadow: 0 0 0 30px #0C0A09 inset; 
+}
+

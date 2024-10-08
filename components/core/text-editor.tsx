@@ -4,12 +4,19 @@ import "froala-editor/js/plugins.pkgd.min.js";
 import { ControllerRenderProps } from "react-hook-form";
 import FroalaEditorComponent from "react-froala-wysiwyg";
 import { useTheme } from "next-themes";
+import { useImageUpload } from "@/hooks/api/use-image-upload";
+import FroalaEditor from "react-froala-wysiwyg";
+import { useRef } from "react";
+import { FroalaOptions } from "froala-editor";
+import { toast } from "sonner";
 
 type FroalaEditorForm = {
     title: string;
     slug: string;
     date: Date | undefined;
     image: string | undefined;
+    category: string;
+    author: string;
     discription: string;
     content: string;
     userTags: string[];
@@ -20,10 +27,12 @@ interface FroalaTextEditorBlogSparkProps {
 }
 
 function FroalaTextEditorBlogSpark({ field }: FroalaTextEditorBlogSparkProps) {
-    const { theme } = useTheme()
+    const { theme } = useTheme();
+    const editorref = useRef<FroalaEditor>(null);
+    const { UploadImage, setUploadProgress } = useImageUpload();
 
-    const config = {
-        key: process.env.NEXT_PUBLIC_FROALA_EDITOR_KEY,
+    const config: Partial<FroalaOptions> = {
+        apiKey: process.env.NEXT_PUBLIC_FROALA_EDITOR_KEY ?? "",
         toolbarInline: false,
         toolbarSticky: false,
         charCounterCount: false,
@@ -41,7 +50,6 @@ function FroalaTextEditorBlogSpark({ field }: FroalaTextEditorBlogSparkProps) {
             "formatOL",
             "formatUL",
             "paragraphFormat",
-            "quote",
             "insertLink",
             "insertImage",
             "insertVideo",
@@ -49,15 +57,40 @@ function FroalaTextEditorBlogSpark({ field }: FroalaTextEditorBlogSparkProps) {
             "embedly",
             "insertFile",
             "fullscreen",
-            "getPDF",
-            "html",
         ],
         quickInsertEnabled: false,
         theme: theme === "dark" ? "dark" : "",
+        imageUpload: true,
+        imageUploadMethod: "POST",
+        events: {
+            "image.beforeUpload": function (this, files: any) {
+                if (files.length) {
+                    try {
+                        UploadImage(files[0], "BLOG_CONTENT", (data) => {
+                            this.image.insert(
+                                data.url,
+                                false,
+                                {
+                                    name: data.url.match(/\/([^\/]+?)(?=\.[^.]+$)/)?.[1],
+                                    id: data.url.match(/\/([^\/]+?)(?=\.[^.]+$)/)?.[1],
+                                },
+                                "",
+                                this.image.get()
+                            );
+                        });
+                    } catch (error) {
+                        toast.error("Failed to upload image. Please try again.");
+                    }
+                    return false;
+                }
+                return false as boolean;
+            },
+        },
     };
 
     return (
         <FroalaEditorComponent
+            ref={editorref}
             tag="textarea"
             model={field.value}
             onModelChange={field.onChange}

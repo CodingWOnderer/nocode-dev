@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { ReloadIcon, TrashIcon } from "@radix-ui/react-icons"
+import { ReloadIcon } from "@radix-ui/react-icons"
 import { type Row } from "@tanstack/react-table"
 import { toast } from "sonner"
 

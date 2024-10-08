@@ -21,7 +21,7 @@ export const BlogSection = () => {
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     {publishedBlog.map((item, index) => (
-                        <Suspense fallback={<BlogSkeleton className={cn(index === 0 ? "md:col-span-2" : "")} />}>
+                        <Suspense fallback={<BlogSkeleton key={index} className={cn(index === 0 ? "md:col-span-2" : "")} />}>
                             <ArticleCard
                                 key={index}
                                 className={index === 0 ? "md:col-span-2" : ""}

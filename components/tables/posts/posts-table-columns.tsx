@@ -9,17 +9,29 @@ export function getColumns(): ColumnDef<BlogListType>[] {
         {
             accessorKey: "title",
             header: () => <div>Title</div>,
-            cell: ({ row }) => <div className="h-full w-full transition-colors group-hover:text-foreground text-xs text-muted-foreground capitalize">{row.getValue("title")}</div>,
+            cell: ({ row }) => (
+                <div className="h-full w-full transition-colors group-hover:text-foreground text-xs text-muted-foreground capitalize">
+                    {row.getValue("title")}
+                </div>
+            ),
         },
         {
             accessorKey: "slug",
             header: () => <div>Slug</div>,
-            cell: ({ row }) => <div className="h-full w-full transition-colors group-hover:text-foreground text-xs text-muted-foreground capitalize">{row.getValue("slug")}</div>,
+            cell: ({ row }) => (
+                <div className="h-full w-full transition-colors group-hover:text-foreground text-xs text-muted-foreground capitalize">
+                    {row.getValue("slug")}
+                </div>
+            ),
         },
         {
             accessorKey: "date",
             header: () => <div>Date</div>,
-            cell: ({ row }) => <div className="h-full w-full transition-colors group-hover:text-foreground text-xs text-muted-foreground capitalize">{row.getValue("date")}</div>,
+            cell: ({ row }) => (
+                <div className="h-full w-full transition-colors group-hover:text-foreground text-xs text-muted-foreground capitalize">
+                    {row.getValue("date")}
+                </div>
+            ),
         },
         {
             accessorKey: "image",
@@ -33,7 +45,7 @@ export function getColumns(): ColumnDef<BlogListType>[] {
         {
             id: "actions",
             cell: function Cell({ row }) {
-                return <PublishButton blog={row.original} />
+                return <PublishButton blog={row.original} />;
             },
         },
     ];

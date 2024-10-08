@@ -22,7 +22,7 @@ const LandingPage = () => {
                             {/* Hero Title */}{" "}
                             <h1 className="mb-4 text-3xl font-bold md:text-5xl">
                                 {" "}
-                                The Website You Want Without The Dev Time.{" "}
+                                {`The Website You Want Without The Dev Time.`}{" "}
                             </h1>
                             <p className="mb-6 max-w-lg text-sm text-gray-500  md:mb-10 lg:mb-12">
                                 {" "}
@@ -32,7 +32,7 @@ const LandingPage = () => {
                             {/* Hero Button */}{" "}
                             <div className="flex space-x-2 items-center">
                                 <Button>
-                                    Let's Talk
+                                    {`Let's Talk`}
                                 </Button>
                                 <Button variant={"ghost"} className="flex items-center">
                                     <MdOutlineArrowOutward /> <p>View Showreel</p>

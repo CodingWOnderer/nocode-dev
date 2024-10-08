@@ -1,5 +1,4 @@
-import PostsHeader from "@/components/posts-header";
-import "./editor.css"
+
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -14,7 +13,6 @@ export default function PostRootLayout({
 }>) {
     return (
         <main className="w-full relative flex flex-col">
-            <PostsHeader />
             {children}
         </main>
     );

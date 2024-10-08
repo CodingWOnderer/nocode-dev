@@ -1,4 +1,4 @@
-import { BlogTypes } from "@/components/forms/blog/blog-creation-form";
+import { BlogTypes } from "@/components/forms/schemas";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
@@ -6,18 +6,16 @@ const LOCAL_STORED_BLOGS = "localblogs";
 
 export interface ModifiedBlogType extends Omit<BlogTypes, "date"> {
     date?: string | undefined;
-    publish: boolean,
+    publish: boolean;
 }
 
 type SideFormState = { open: boolean; blog: BlogTypes };
 type SideFormOpenType = { open: boolean; slug: string };
 
-
 interface state {
     blog: ModifiedBlogType;
     blogList: ModifiedBlogType[];
     sideFormState: SideFormState;
-
 }
 
 interface Actions {
@@ -28,7 +26,6 @@ interface Actions {
     getBlogFromSlug: (slug: string) => ModifiedBlogType | undefined;
 }
 
-
 export const BlogInitialState = {
     title: "",
     content: "",
@@ -36,9 +33,11 @@ export const BlogInitialState = {
     slug: "",
     discription: "",
     image: undefined,
+    category: "",
+    author: "",
     publish: false,
-    userTags: [] as string[]
-}
+    userTags: [] as string[],
+};
 
 const useBlogStore = create<state & Actions>()(
     persist(
@@ -47,13 +46,15 @@ const useBlogStore = create<state & Actions>()(
             blogList: [],
             setBlogList: (blogs: ModifiedBlogType) => {
                 const { blogList } = get();
-                const updatedBlogList = blogList.filter(item => item.slug !== blogs.slug);
+                const updatedBlogList = blogList.filter(
+                    (item) => item.slug !== blogs.slug
+                );
                 return set({ blogList: [...updatedBlogList, blogs] });
             },
             setLocalBlog: (blogs: ModifiedBlogType) => set({ blog: blogs }),
             getBlogFromSlug: (slug: string) => {
                 const { blogList } = get();
-                const updatedBlogList = blogList.find(item => item.slug === slug);
+                const updatedBlogList = blogList.find((item) => item.slug === slug);
                 return updatedBlogList;
             },
             setSideFormOpen: (sidebarState) => {
@@ -61,23 +62,24 @@ const useBlogStore = create<state & Actions>()(
                 const slug = sidebarState.slug;
 
                 if (!slug) {
-                    return set({ sideFormState: { open: sidebarState.open, blog: BlogInitialState } });
+                    return set({
+                        sideFormState: { open: sidebarState.open, blog: BlogInitialState },
+                    });
                 }
 
-                const blog = blogList.find(item => item.slug.includes(slug));
+                const blog = blogList.find((item) => item.slug.includes(slug));
                 const sideFormState = {
                     open: sidebarState.open,
                     blog: blog
                         ? { ...blog, date: blog.date ? new Date(blog.date) : new Date() }
-                        : BlogInitialState
+                        : BlogInitialState,
                 };
-
 
                 return set({ sideFormState });
             },
             deleteBlog: (slug: string) => {
                 const { blogList } = get();
-                const updatedBlogList = blogList.filter(item => item.slug !== slug);
+                const updatedBlogList = blogList.filter((item) => item.slug !== slug);
                 return set({ blogList: [...updatedBlogList] });
             },
             sideFormState: {

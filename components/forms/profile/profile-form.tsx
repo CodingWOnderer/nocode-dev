@@ -22,7 +22,6 @@ import {
     FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useState } from "react";
 import { ImageUploader } from "@/components/common/file-upload";
 import { Separator } from "@/components/ui/separator";
 
@@ -40,6 +39,7 @@ const formSchema = z.object({
             { message: "Please upload a valid image (JPEG, PNG, or GIF)" }
         ),
 });
+
 
 const ProfileForms = () => {
 

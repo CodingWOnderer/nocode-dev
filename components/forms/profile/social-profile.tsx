@@ -30,6 +30,8 @@ const formSchema = z.object({
     linkedin: z.string().optional(),
 });
 
+
+
 export function SocialProfilesForm() {
     const form = useForm({
         resolver: zodResolver(formSchema),

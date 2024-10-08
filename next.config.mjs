@@ -5,6 +5,11 @@ const nextConfig = {
     disableStaticImages: true,
     remotePatterns: [
       { protocol: "https", hostname: "assets.lummi.ai", pathname: "/**" },
+      {
+        protocol: "https",
+        hostname:"placehold.co",
+        pathname: "/**",
+      }
     ],
   },
   typescript:{

@@ -69,7 +69,7 @@ const InputBlock = ({
     rightIcon,
     ...input
 }: InputBlockProps) => (
-    <div className={cn(rootVariants({ variant, size, className }), "  w-full")}>
+    <div className={cn(rootVariants({ variant, size, className }), "border-t  w-full")}>
         {leftIcon && <span className="px-1">{leftIcon}</span>}
         <Input {...input} />
         {rightIcon && <span className="px-1">{rightIcon}</span>}
