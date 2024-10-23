@@ -1,4 +1,5 @@
 "use client";
+
 import React from "react";
 import {
     ResizableHandle,
@@ -6,7 +7,7 @@ import {
     ResizablePanelGroup,
 } from "@/components/ui/resizable";
 import * as z from "zod";
-import { BlogForm } from "@/components/forms/blog/blog-creation-form";
+// import { BlogForm } from "@/components/forms/blog/blog-creation-form";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
@@ -21,14 +22,17 @@ import BlogPreviewSkeleton from "@/components/skeletons/blog-preview-skeleton";
 import { cn } from "@/lib/utils";
 import { CreationHeader } from "./creation-header";
 import { sanitizeHtml } from "@/utils/sanitize-html";
+import { BlogForm } from "@/components/forms/blog/blog-creation-form";
+
 
 export const BlogPreview = ({ slug }: { slug: string }) => {
     const { setLocalBlog } = useBlogStore();
+
     const setBlogList = useBlogStore((state) => state.setBlogList);
-    const currentBlog = slug === "new-blog" ? BlogInitialState : useBlogStore((state) => state.getBlogFromSlug)(slug);
 
+    const getBlogFromSlug = useBlogStore((state) => state.getBlogFromSlug);
 
-
+    const currentBlog = slug === "new-blog" ? BlogInitialState : getBlogFromSlug(slug);
 
     /**
      * 

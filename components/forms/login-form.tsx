@@ -165,7 +165,7 @@ export function SignInForm() {
             </Form>
 
             <div className="my-0 w-full text-sm">
-                Don't have an account ?{" "}
+                Don&apos;t have an account ?{" "}
                 <Link className="underline text-sm text-foreground" href="/onboarding">
                     Create account
                 </Link>

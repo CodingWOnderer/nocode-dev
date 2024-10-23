@@ -27,6 +27,7 @@ import { TimePickerDemo } from "@/components/extension/time-picker-demo";
 import { cn } from "@/lib/utils";
 import dynamic from "next/dynamic";
 import { InputTags } from "@/components/extension/tag-input";
+import { BlogFromProps } from "@/types/schemas";
 
 const FroalaEditorComponent = dynamic(
     () => import("@/components/core/text-editor"),
@@ -35,23 +36,7 @@ const FroalaEditorComponent = dynamic(
     }
 );
 
-interface BlogFromProps {
-    form: UseFormReturn<
-        {
-            title: string;
-            slug: string;
-            date: Date | undefined;
-            image: string | undefined;
-            discription: string;
-            category: string;
-            author: string;
-            content: string;
-            userTags: string[];
-        },
-        any,
-        undefined
-    >;
-}
+
 
 export function BlogForm({ form }: BlogFromProps) {
     const imageValue = form.watch("image");
@@ -170,7 +155,7 @@ export function BlogForm({ form }: BlogFromProps) {
                                     <div className="p-3 border-t border-border">
                                         <TimePickerDemo
                                             setDate={field.onChange}
-                                            // @ts-ignore
+                                            // @ts-expect-error: This function may return undefined for certain inputs
                                             date={new Date(field?.value ?? undefined)}
                                         />
                                     </div>
@@ -228,8 +213,8 @@ export function BlogForm({ form }: BlogFromProps) {
                                 <InputTags {...field} />
                             </FormControl>
                             <FormDescription>
-                                Enter up to 5 relevant tags for your blog post, like 'coding' or
-                                'productivity'.
+                                {`Enter up to 5 relevant tags for your blog post, like 'coding' or
+                                'productivity'.`}
                             </FormDescription>
                             <FormMessage />
                         </FormItem>

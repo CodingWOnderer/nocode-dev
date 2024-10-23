@@ -1,17 +1,7 @@
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
-    Check,
-    FlagIcon,
-    Loader,
-    ReplyIcon,
-    ThumbsDownIcon,
-    ThumbsUpIcon,
-    ArrowDown,
-    ArrowUp,
-    TrashIcon,
     ArrowDownUp,
-    PencilIcon,
 } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import {
@@ -23,47 +13,46 @@ import {
 } from "@/components/ui/dropdown-menu";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
-import { useState, useEffect } from "react";
-import { Skeleton } from "@/components/ui/skeleton";
+import { useState } from "react";
 import { Comment } from "@/types/blog";
 import { useAuthState } from "@/hooks/use-auth-state";
 import { toast } from "sonner";
 
 export function UserComments() {
-    const quantity = 3;
+    // const quantity = 3;
 
-    const [sortOption, setSortOption] = useState<"newest" | "oldest">("newest");
-    const [comments, setComments] = useState<Comment[]>([]);
+    // const [sortOption, setSortOption] = useState<"newest" | "oldest">("newest");
+    // const [comments, setComments] = useState<Comment[]>([]);
     const [showEmojiPicker, setShowEmojiPicker] = useState(false);
     const [posting, setPosting] = useState(false);
     const [commentContent, setCommentContent] = useState("");
     const { user, isAuthenticated } = useAuthState();
-    const [isExpanded, setIsExpanded] = useState(false);
-    const displayedList = isExpanded ? comments : comments?.slice(0, quantity);
+    // const [isExpanded, setIsExpanded] = useState(false);
+    // const displayedList = isExpanded ? comments : comments?.slice(0, quantity);
 
-    const toggleExpanded = () => {
-        setIsExpanded(!isExpanded);
-    };
+    // const toggleExpanded = () => {
+    //     setIsExpanded(!isExpanded);
+    // };
 
     {
         /** handle sort change */
     }
-    const handleSortChange = (value: string) => {
-        const sortOption = value as "newest" | "oldest";
+    // const handleSortChange = (value: string) => {
+    //     const sortOption = value as "newest" | "oldest";
 
-        if (sortOption === "newest" || sortOption === "oldest") {
-            setSortOption(sortOption);
+    //     if (sortOption === "newest" || sortOption === "oldest") {
+    //         // setSortOption(sortOption);
 
-            const sortedComments = [...comments].sort((a, b) => {
-                if (sortOption === "newest") {
-                    return b.createdAt.getTime() - a.createdAt.getTime();
-                } else {
-                    return a.createdAt.getTime() - b.createdAt.getTime();
-                }
-            });
-            setComments(sortedComments);
-        }
-    };
+    //         const sortedComments = [...comments].sort((a, b) => {
+    //             if (sortOption === "newest") {
+    //                 return b.createdAt.getTime() - a.createdAt.getTime();
+    //             } else {
+    //                 return a.createdAt.getTime() - b.createdAt.getTime();
+    //             }
+    //         });
+    //         setComments(sortedComments);
+    //     }
+    // };
 
     {
         /** function to fetch comments */
@@ -117,29 +106,29 @@ export function UserComments() {
         setCommentContent((prev) => prev + e.native);
     };
 
-    const handleDeleteComment = async (commentId: string) => {
-        try {
-            if (!isAuthenticated || !user?.username) {
-                toast.error("Action Forbidden");
-                return;
-            }
+    // const handleDeleteComment = async (commentId: string) => {
+    //     try {
+    //         if (!isAuthenticated || !user?.username) {
+    //             toast.error("Action Forbidden");
+    //             return;
+    //         }
 
-            // Call the deleteComment service
-            //   toast.promise(
-            //     onDeleteComment({ commentId, userId: user.id })
-            //       .then(() =>
-            //         setComments(comments.filter((comment) => comment.id !== commentId))
-            //       ),
-            //     {
-            //       loading: 'Deleting...',
-            //       success: () => "Comment deleted successfully!",
-            //       error: "Failed to delete comment. Please try again.",
-            //     }
-            //   );
-        } catch (error) {
-            toast.error("Failed to delete comment. Please try again.");
-        }
-    };
+    //         // Call the deleteComment service
+    //         //   toast.promise(
+    //         //     onDeleteComment({ commentId, userId: user.id })
+    //         //       .then(() =>
+    //         //         setComments(comments.filter((comment) => comment.id !== commentId))
+    //         //       ),
+    //         //     {
+    //         //       loading: 'Deleting...',
+    //         //       success: () => "Comment deleted successfully!",
+    //         //       error: "Failed to delete comment. Please try again.",
+    //         //     }
+    //         //   );
+    //     } catch (error) {
+    //         toast.error("Failed to delete comment. Please try again.");
+    //     }
+    // };
 
     return (
         <div className="grid gap-6 ">

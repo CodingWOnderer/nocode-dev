@@ -23,7 +23,7 @@ export const SeoCredenza = ({ slug }: { slug: string }) => {
                 <DialogHeader>
                     <DialogTitle>Seo Control of Website</DialogTitle>
                     <DialogDescription>
-                        Manage your website's SEO settings to optimize visibility on search engines.
+                        Manage your website&apos;s SEO settings to optimize visibility on search engines.
                         Update key SEO elements like meta titles, descriptions, canonical URLs, and more.
                     </DialogDescription>
                 </DialogHeader>

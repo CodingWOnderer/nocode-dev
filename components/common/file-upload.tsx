@@ -62,6 +62,7 @@ export const ImageUploader: FC<FileUploaderProps> = (props) => {
             }
         },
 
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         [files, maxFileCount, multiple, onUpload, setFiles]
     );
 
