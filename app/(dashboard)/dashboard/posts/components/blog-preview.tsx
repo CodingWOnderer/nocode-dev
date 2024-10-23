@@ -20,11 +20,24 @@ import { BlogPostFormSkeleton } from "@/components/skeletons/blog-posts-form";
 import BlogPreviewSkeleton from "@/components/skeletons/blog-preview-skeleton";
 import { cn } from "@/lib/utils";
 import { CreationHeader } from "./creation-header";
+import { sanitizeHtml } from "@/utils/sanitize-html";
 
 export const BlogPreview = ({ slug }: { slug: string }) => {
     const { setLocalBlog } = useBlogStore();
     const setBlogList = useBlogStore((state) => state.setBlogList);
     const currentBlog = slug === "new-blog" ? BlogInitialState : useBlogStore((state) => state.getBlogFromSlug)(slug);
+
+
+
+
+    /**
+     * 
+     * @description sanitizing string rendered html
+     * 
+     */
+
+    const sanitize_html = sanitizeHtml(currentBlog?.content ?? "<div>Empty</div>");
+
 
     const form = useForm({
         resolver: zodResolver(BlogformSchema),
@@ -49,6 +62,7 @@ export const BlogPreview = ({ slug }: { slug: string }) => {
 
     return (
         <>
+
             <CreationHeader onSubmit={onSubmit} handleSubmit={form.handleSubmit} slug={slug} />
             <div>
                 <ResizablePanelGroup direction="horizontal">
@@ -138,9 +152,10 @@ export const BlogPreview = ({ slug }: { slug: string }) => {
                                         </div>
                                     </div>
                                     <div
-                                        className="prose prose-figcaption:text-muted-foreground/60 prose-blockquote:text-foreground prose-strong:text-foreground prose-headings:text-foreground text-muted-foreground max-w-4xl mx-auto prose-img:overflow-clip prose-pre:bg-background prose-img:rounded-xl prose-img:cursor-pointer"
+
+                                        className="prose prose-figcaption:text-muted-foreground/60 prose-blockquote:text-foreground prose-strong:text-foreground prose-headings:text-foreground text-muted-foreground max-w-4xl mx-auto prose-img:overflow-clip prose-pre:bg-background prose-img:rounded-xl prose-img:cursor-pointer "
                                         dangerouslySetInnerHTML={{
-                                            __html: form.watch("content") ?? "",
+                                            __html: sanitize_html ?? "",
                                         }}
                                     ></div>
 

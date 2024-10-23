@@ -31,6 +31,33 @@ function FroalaTextEditorBlogSpark({ field }: FroalaTextEditorBlogSparkProps) {
     const editorref = useRef<FroalaEditor>(null);
     const { UploadImage, setUploadProgress } = useImageUpload();
 
+
+    const generateCustomId = (text: string) => {
+        return text
+            .toLowerCase()
+            .replace(/\s+/g, '-')
+            .replace(/[^a-z0-9\-]+/g, '')
+            .replace(/^-+|-+$/g, '');
+    };
+
+
+    const updateHeadingsWithIds = (html: string) => {
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = html;
+
+        const headings = tempDiv.querySelectorAll('h1, h2, h3, h4, h5, h6');
+        headings.forEach((heading) => {
+            const headingElement = heading as HTMLElement;
+            const content = headingElement.innerText.trim();
+            if (content) {
+                headingElement.id = generateCustomId(content);
+            }
+        });
+
+        return tempDiv.innerHTML;
+    };
+
+
     const config: Partial<FroalaOptions> = {
         apiKey: process.env.NEXT_PUBLIC_FROALA_EDITOR_KEY ?? "",
         toolbarInline: false,
@@ -85,6 +112,20 @@ function FroalaTextEditorBlogSpark({ field }: FroalaTextEditorBlogSparkProps) {
                 }
                 return false as boolean;
             },
+            "blur": function () {
+                const updatedHtml = updateHeadingsWithIds(this.html.get());
+                this.html.set(updatedHtml);
+            },
+            "paste.after": function (this) {
+                const updatedHtml = updateHeadingsWithIds(this.html.get());
+                this.html.set(updatedHtml);
+                return true;
+            },
+            "save.before": function (this, html: string) {
+                const updatedHtml = updateHeadingsWithIds(html);
+                this.html.set(updatedHtml);
+                return true;
+            }
         },
     };
 

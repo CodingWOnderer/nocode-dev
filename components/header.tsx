@@ -10,8 +10,7 @@ import React from 'react';
 
 const headerLinks = [
     { name: 'Dashboard', href: '/dashboard' },
-    { name: 'Pricing', href: '/header-demo/#pricing' },
-    { name: 'FAQs', href: '/header-demo/#faqs' },
+    { name: 'Login', href: '/login' },
 ];
 const icons = [
     {

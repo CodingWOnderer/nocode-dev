@@ -3,10 +3,19 @@
 import { Badge } from "@/components/ui/badge";
 import { format } from "date-fns";
 import Image from "next/image";
-import React from "react";
+import React, { useEffect } from "react";
+import * as tocbot from "tocbot";
 import useBlogStore from "@/hooks/use-blog-store";
 import { motion } from "framer-motion";
 import BlogPreviewSkeleton from "@/components/skeletons/blog-preview-skeleton";
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardFooter,
+    CardHeader,
+    CardTitle,
+} from "@/components/ui/card";
 
 const parentVariants = {
     hidden: { opacity: 0 },
@@ -28,11 +37,34 @@ const Page = ({ params }: { params: { slug: string } }) => {
         params.slug
     );
 
+    useEffect(() => {
+        tocbot.init({
+            tocSelector: ".gh-toc",
+            contentSelector: ".gh-content",
+            headingSelector: "h1, h2, h3, h4",
+            hasInnerContainers: true,
+            scrollSmooth: true,
+            scrollSmoothOffset: -200,
+            scrollSmoothDuration: 420,
+            includeHtml: false,
+            headingObjectCallback: (obj: Record<string, any>, node: HTMLElement) => {
+                const id = (node.childNodes[0] as HTMLElement | null)?.id || "#";
+                return { ...obj, id, children: [] };
+            },
+        });
+
+        return () => {
+            tocbot.refresh();
+        };
+    }, []);
+
     if (!currentPost) {
         return <BlogPreviewSkeleton />;
     }
 
     return (
+
+
         <motion.div className="px-5">
             <motion.div
                 className="max-w-4xl py-16 lg:py-24 gap-16 flex flex-col mx-auto"
@@ -107,15 +139,33 @@ const Page = ({ params }: { params: { slug: string } }) => {
                 </motion.div>
             </motion.div>
 
-            <motion.div
-                className="prose prose-figcaption:text-muted-foreground/60 prose-blockquote:text-foreground prose-strong:text-foreground prose-headings:text-foreground text-muted-foreground max-w-4xl mx-auto prose-img:overflow-clip prose-pre:bg-stone-900 dark:prose-pre:bg-background prose-img:rounded-xl prose-img:cursor-pointer"
-                dangerouslySetInnerHTML={{ __html: currentPost?.content ?? "" }}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-                variants={childVariants}
-            />
+            <div className="flex">
+                <div className=" relative lg:block hidden">
+                    <Card className=" border-none sticky top-[20%] max-w-[250px]">
+                        <CardHeader className="sr-only">
+                            <CardTitle>Card Title</CardTitle>
+                            <CardDescription>Card Description</CardDescription>
+                        </CardHeader>
+                        <CardContent className="gh-toc prose text-muted-foreground prose-sm prose-a:text-muted-foreground prose-a"></CardContent>
+                        <CardFooter className=" sr-only">
+                            <p>Card Footer</p>
+                        </CardFooter>
+                    </Card>
+                </div>
+                <div className=" xl:px-10">
+                    <motion.div
+                        className="prose prose-figcaption:text-muted-foreground/60 prose-blockquote:text-foreground prose-strong:text-foreground prose-headings:text-foreground text-muted-foreground max-w-4xl mx-auto prose-img:overflow-clip prose-pre:bg-stone-900 dark:prose-pre:bg-background prose-img:rounded-xl prose-img:cursor-pointer gh-content"
+                        dangerouslySetInnerHTML={{ __html: currentPost?.content ?? "" }}
+                        initial="hidden"
+                        whileInView="visible"
+                        viewport={{ once: true }}
+                        variants={childVariants}
+                    />
+                </div>
+            </div>
         </motion.div>
+
+
     );
 };
 
