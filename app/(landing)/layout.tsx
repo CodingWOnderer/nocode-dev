@@ -1,4 +1,6 @@
+import InteractiveBanner from "@/components/alert-banner";
 import Footer from "@/components/footer";
+import Footer2 from "@/components/footer2";
 import { HeaderDemo } from "@/components/header";
 import type { Metadata } from "next";
 
@@ -15,9 +17,9 @@ export default function RootLayout({
 }>) {
     return (
         <main className="w-full  ">
-            <HeaderDemo variant={"centered"} sticky />
+            <HeaderDemo variant={"default"} sticky />
             {children}
-            <Footer />
+            <Footer2 />
         </main>
     );
 }

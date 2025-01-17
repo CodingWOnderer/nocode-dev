@@ -4,6 +4,7 @@ import { CgClose, CgMenu } from 'react-icons/cg';
 import * as React from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from './ui/button';
+import { Search } from './search-input';
 
 export const MobileHeader = ({
     Logo,
@@ -38,7 +39,9 @@ export const MobileHeader = ({
                     {isOpen ? <CgClose /> : <CgMenu />}
                 </Button>
             </div>
-
+            <div className='my-2'>
+                <Search />
+            </div>
             <dialog
                 open={isOpen}
                 className={

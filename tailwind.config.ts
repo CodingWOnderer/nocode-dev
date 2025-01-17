@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+const defaultTheme = require('tailwindcss/defaultTheme')
 
 const config: Config = {
 	darkMode: ["class"],
@@ -8,7 +9,11 @@ const config: Config = {
 		"./app/**/*.{js,ts,jsx,tsx,mdx}",
 	],
 	theme: {
+
 		extend: {
+			fontFamily: {
+				"Gotham": ["Gotham SSm A", ...defaultTheme.fontFamily.sans]
+			},
 			colors: {
 				background: 'hsl(var(--background))',
 				foreground: 'hsl(var(--foreground))',
@@ -93,6 +98,6 @@ const config: Config = {
 	plugins: [require("tailwindcss-animate"), require('@tailwindcss/typography'), require("@assistant-ui/react/tailwindcss")({
 		components: ["thread", "assistant-modal"],
 		shadcn: true
-	})],
+	}), require('tailwindcss-highlights')],
 };
 export default config;

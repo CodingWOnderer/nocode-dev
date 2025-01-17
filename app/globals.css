@@ -78,6 +78,42 @@ body {
   body {
     @apply bg-background text-foreground;
   }
+
+  @font-face{ 
+    font-family: "Gotham SSm A"; 
+    src: url(./fonts/gothamssm_xlight.otf); 
+    font-weight:200; 
+    font-style:normal;
+  }
+  
+  @font-face{ 
+    font-family: "Gotham SSm A"; 
+    src: url(./fonts/gothamssm_light.otf); 
+    font-weight:300; 
+    font-style:normal;
+  } 
+  
+  @font-face{ 
+    font-family: "Gotham SSm A"; 
+    src: url(./fonts/gothamssm_medium.otf); 
+    font-weight:500; 
+    font-style:normal;
+  } 
+  
+  @font-face{ 
+    font-family: "Gotham SSm A"; 
+    src: url(./fonts/gothamssm_bold.otf); 
+    font-weight:700; 
+    font-style:normal;
+  }
+  
+  
+  @font-face{ 
+    font-family: "Gotham SSm A"; 
+    src: url(./fonts/gothamssm_black.otf); 
+    font-weight:900; 
+    font-style:normal;
+  } 
 }
 
 

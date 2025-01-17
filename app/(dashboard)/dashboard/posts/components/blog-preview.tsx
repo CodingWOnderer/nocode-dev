@@ -61,6 +61,7 @@ export const BlogPreview = ({ slug }: { slug: string }) => {
     function onSubmit(data: z.infer<typeof BlogformSchema>) {
         setLocalBlog({ ...data, date: data.date?.toISOString(), publish: false });
         setBlogList({ ...data, date: data.date?.toISOString(), publish: false });
+        console.log(data)
         toast.success("Your blog has been created");
     }
 
